@@ -86,26 +86,35 @@ export class MapBoxComponent implements OnInit {
       this.markers.subscribe(markers => {
         const data = new FeatureCollection(markers);
         this.source.setData(data);
+        markers.forEach(marker => {
+          const el = document.createElement('div');
+
+          // make a marker for each feature and add to the map
+          new mapboxgl.Marker(el)
+            .setLngLat(marker.geometry.coordinates)
+            .setPopup(new mapboxgl.Popup({offset: 25}) // add popups
+              .setHTML('<p>' + marker.properties.message + '</p>'))
+            .addTo(this.map);
+        });
       });
 
-      /// create map layers with realtime data
-      this.map.addLayer({
-        id: 'firebase',
-        source: 'firebase',
-        type: 'symbol',
-        layout: {
-          'text-field': '{message}',
-          'text-size': 24,
-          'text-transform': 'uppercase',
-          'icon-image': 'rocket-15',
-          'text-offset': [0, 1.5]
-        },
-        paint: {
-          'text-color': '#f16624',
-          'text-halo-color': '#fff',
-          'text-halo-width': 2
-        }
-      });
+      // create map layers with realtime data
+      // this.map.addLayer({
+      //   id: 'firebase',
+      //   source: 'firebase',
+      //   type: 'symbol',
+      //   layout: {
+      //     'text-field': '{message}',
+      //     'text-size': 24,
+      //     'icon-image': 'rocket-15',
+      //     'text-offset': [0, 1.5]
+      //   },
+      //   paint: {
+      //     'text-color': '#f16624',
+      //     'text-halo-color': '#fff',
+      //     'text-halo-width': 2
+      //   }
+      // });
 
     });
 
