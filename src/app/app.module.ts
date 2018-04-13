@@ -12,12 +12,14 @@ import {AngularFireAuthModule} from 'angularfire2/auth';
 import {FormsModule} from '@angular/forms';
 import {MapService} from './services/map.service';
 import {AngularFireDatabase} from 'angularfire2/database';
+import {SidebarComponent} from './components/sidebar/sidebar.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     MapBoxComponent,
+    SidebarComponent,
   ],
   imports: [
     BrowserModule,
