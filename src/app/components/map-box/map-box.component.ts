@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
 import {MapService} from '../../services/map.service';
 import {FeatureCollection, GeoJson} from '../../map';
+import {VkService} from '../../services/vk.service';
 
 
 @Component({
@@ -16,17 +17,16 @@ export class MapBoxComponent implements OnInit {
   style = 'mapbox://styles/mapbox/light-v9';
   lat = 37.75;
   lng = -122.41;
-  message = 'Hello World!';
 
-  // data
-  source: any;
   markers: any;
+  vkEvents: any;
 
-  constructor(private mapService: MapService) {
+  constructor(private mapService: MapService, private vkService: VkService) {
   }
 
   ngOnInit() {
     this.markers = this.mapService.getMarkers();
+    this.vkEvents = this.vkService.getNearEvents();
     this.initializeMap();
   }
 
@@ -34,8 +34,8 @@ export class MapBoxComponent implements OnInit {
     /// locate the user
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(position => {
-        this.lat = position.coords.latitude;
         this.lng = position.coords.longitude;
+        this.lat = position.coords.latitude;
         this.map.flyTo({
           center: [this.lng, this.lat]
         });
@@ -61,60 +61,54 @@ export class MapBoxComponent implements OnInit {
 
     //// Add Marker on Click
     this.map.on('click', (event) => {
-      const coordinates = [event.lngLat.lng, event.lngLat.lat];
-      const newMarker = new GeoJson(coordinates, {message: this.message});
-      this.mapService.createMarker(newMarker);
+      // const coordinates = [event.lngLat.lng, event.lngLat.lat];
+      // const newMarker = new GeoJson(coordinates, {message: this.message});
+      // this.mapService.createMarker(newMarker);
+      this.vkService.getNearEvents();
     });
 
 
     /// Add realtime firebase data on map load
     this.map.on('load', (event) => {
 
-      /// register source
-      this.map.addSource('firebase', {
-        type: 'geojson',
-        data: {
-          type: 'FeatureCollection',
-          features: []
-        }
-      });
-
-      /// get source
-      this.source = this.map.getSource('firebase');
-
       /// subscribe to realtime database and set data source
       this.markers.subscribe(markers => {
-        const data = new FeatureCollection(markers);
-        this.source.setData(data);
         markers.forEach(marker => {
-          const el = document.createElement('div');
+          const el = document.createElement('img');
+          el.src = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGV' +
+            'pZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMjMgMGwtNC41IDE2LjUtNi4wOTctNS40MyA1Ljg1Mi02LjE3NS03Ljg0NCA1LjQyMS01LjQxMS0xLjMxNiA' +
+            'xOC05em0tMTEgMTIuNTAxdjUuNDk5bDIuMTkzLTMuMzIzLTIuMTkzLTIuMTc2em0tOC42OTggNi44MjVsLTEuNDM5LS41MDcgNS43MDEtNS4yMTUgMS40MzYuMzk2LTUuNjk4IDUuMzI2em0zLjI' +
+            '2MiA0LjI4N2wtMS4zMjMtLjU2NSA0LjQzOS00LjUwMyAxLjMyLjQ1NS00LjQzNiA0LjYxM3ptLTQuMDgzLjM4N2wtMS40ODEtLjUwNyA4LTcuODkgMS40MzcuMzk3LTcuOTU2IDh6Ii8+PC9zdmc+';
 
-          // make a marker for each feature and add to the map
           new mapboxgl.Marker(el)
             .setLngLat(marker.geometry.coordinates)
             .setPopup(new mapboxgl.Popup({offset: 25}) // add popups
-              .setHTML('<p>' + marker.properties.message + '</p>'))
+              .setHTML(
+                '<p>' + marker.properties.message + '</p>'
+              ))
             .addTo(this.map);
         });
       });
 
-      // create map layers with realtime data
-      // this.map.addLayer({
-      //   id: 'firebase',
-      //   source: 'firebase',
-      //   type: 'symbol',
-      //   layout: {
-      //     'text-field': '{message}',
-      //     'text-size': 24,
-      //     'icon-image': 'rocket-15',
-      //     'text-offset': [0, 1.5]
-      //   },
-      //   paint: {
-      //     'text-color': '#f16624',
-      //     'text-halo-color': '#fff',
-      //     'text-halo-width': 2
-      //   }
-      // });
+      this.vkEvents.then(events => {
+        events.forEach(vkEvent => {
+          if (vkEvent.place) {
+            const el = document.createElement('img');
+            el.src = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGV' +
+              'pZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMjMgMGwtNC41IDE2LjUtNi4wOTctNS40MyA1Ljg1Mi02LjE3NS03Ljg0NCA1LjQyMS01LjQxMS0xLjMxNiA' +
+              'xOC05em0tMTEgMTIuNTAxdjUuNDk5bDIuMTkzLTMuMzIzLTIuMTkzLTIuMTc2em0tOC42OTggNi44MjVsLTEuNDM5LS41MDcgNS43MDEtNS4yMTUgMS40MzYuMzk2LTUuNjk4IDUuMzI2em0zLjI' +
+              '2MiA0LjI4N2wtMS4zMjMtLjU2NSA0LjQzOS00LjUwMyAxLjMyLjQ1NS00LjQzNiA0LjYxM3ptLTQuMDgzLjM4N2wtMS40ODEtLjUwNyA4LTcuODkgMS40MzcuMzk3LTcuOTU2IDh6Ii8+PC9zdmc+';
+
+            new mapboxgl.Marker(el)
+              .setLngLat([vkEvent.place.longitude, vkEvent.place.latitude])
+              .setPopup(new mapboxgl.Popup({offset: 25}) // add popups
+                .setHTML(
+                  '<p>' + vkEvent.description + '</p>'
+                ))
+              .addTo(this.map);
+          }
+        });
+      });
 
     });
 
@@ -122,7 +116,6 @@ export class MapBoxComponent implements OnInit {
 
 
   /// Helpers
-
   removeMarker(marker) {
     this.mapService.removeMarker(marker);
   }

@@ -13,6 +13,8 @@ import {FormsModule} from '@angular/forms';
 import {MapService} from './services/map.service';
 import {AngularFireDatabase} from 'angularfire2/database';
 import {SidebarComponent} from './components/sidebar/sidebar.component';
+import {VkService} from './services/vk.service';
+import { EventBoxComponent } from './components/event-box/event-box.component';
 
 
 @NgModule({
@@ -20,6 +22,7 @@ import {SidebarComponent} from './components/sidebar/sidebar.component';
     AppComponent,
     MapBoxComponent,
     SidebarComponent,
+    EventBoxComponent,
   ],
   imports: [
     BrowserModule,
@@ -29,7 +32,7 @@ import {SidebarComponent} from './components/sidebar/sidebar.component';
     AngularFireAuthModule,
     AngularFireStorageModule
   ],
-  providers: [MapService, AngularFireDatabase],
+  providers: [VkService, MapService, AngularFireDatabase],
   bootstrap: [AppComponent]
 })
 export class AppModule {

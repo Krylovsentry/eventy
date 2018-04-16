@@ -9,11 +9,12 @@ export class SidebarComponent implements OnInit {
 
 
   @Input() markers: any;
+  @Input() vkEvents: any;
 
   constructor() {
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
+
 
 }
