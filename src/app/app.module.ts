@@ -15,6 +15,8 @@ import {AngularFireDatabase} from 'angularfire2/database';
 import {SidebarComponent} from './components/sidebar/sidebar.component';
 import {VkService} from './services/vk.service';
 import { EventBoxComponent } from './components/event-box/event-box.component';
+import {MatButtonModule, MatDialogModule, MatInputModule} from '@angular/material';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -30,7 +32,11 @@ import { EventBoxComponent } from './components/event-box/event-box.component';
     AngularFireModule.initializeApp(environment.firebaseCongig),
     AngularFirestoreModule,
     AngularFireAuthModule,
-    AngularFireStorageModule
+    AngularFireStorageModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatInputModule,
+    NoopAnimationsModule
   ],
   providers: [VkService, MapService, AngularFireDatabase],
   bootstrap: [AppComponent]

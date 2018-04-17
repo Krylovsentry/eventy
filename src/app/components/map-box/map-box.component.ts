@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
 import {MapService} from '../../services/map.service';
-import {FeatureCollection, GeoJson} from '../../map';
+import {GeoJson} from '../../map';
 import {VkService} from '../../services/vk.service';
 
 
@@ -17,6 +17,11 @@ export class MapBoxComponent implements OnInit {
   style = 'mapbox://styles/mapbox/light-v9';
   lat = 37.75;
   lng = -122.41;
+
+  paperImgSrc = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGV' +
+    'pZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMjMgMGwtNC41IDE2LjUtNi4wOTctNS40MyA1Ljg1Mi02LjE3NS03Ljg0NCA1LjQyMS01LjQxMS0xLjMxNiA' +
+    'xOC05em0tMTEgMTIuNTAxdjUuNDk5bDIuMTkzLTMuMzIzLTIuMTkzLTIuMTc2em0tOC42OTggNi44MjVsLTEuNDM5LS41MDcgNS43MDEtNS4yMTUgMS40MzYuMzk2LTUuNjk4IDUuMzI2em0zLjI' +
+    '2MiA0LjI4N2wtMS4zMjMtLjU2NSA0LjQzOS00LjUwMyAxLjMyLjQ1NS00LjQzNiA0LjYxM3ptLTQuMDgzLjM4N2wtMS40ODEtLjUwNyA4LTcuODkgMS40MzcuMzk3LTcuOTU2IDh6Ii8+PC9zdmc+';
 
   markers: any;
   vkEvents: any;
@@ -54,19 +59,8 @@ export class MapBoxComponent implements OnInit {
       center: [this.lng, this.lat]
     });
 
-
     /// Add map controls
     this.map.addControl(new mapboxgl.NavigationControl());
-
-
-    //// Add Marker on Click
-    this.map.on('click', (event) => {
-      // const coordinates = [event.lngLat.lng, event.lngLat.lat];
-      // const newMarker = new GeoJson(coordinates, {message: this.message});
-      // this.mapService.createMarker(newMarker);
-      this.vkService.getNearEvents();
-    });
-
 
     /// Add realtime firebase data on map load
     this.map.on('load', (event) => {
@@ -75,10 +69,7 @@ export class MapBoxComponent implements OnInit {
       this.markers.subscribe(markers => {
         markers.forEach(marker => {
           const el = document.createElement('img');
-          el.src = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGV' +
-            'pZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMjMgMGwtNC41IDE2LjUtNi4wOTctNS40MyA1Ljg1Mi02LjE3NS03Ljg0NCA1LjQyMS01LjQxMS0xLjMxNiA' +
-            'xOC05em0tMTEgMTIuNTAxdjUuNDk5bDIuMTkzLTMuMzIzLTIuMTkzLTIuMTc2em0tOC42OTggNi44MjVsLTEuNDM5LS41MDcgNS43MDEtNS4yMTUgMS40MzYuMzk2LTUuNjk4IDUuMzI2em0zLjI' +
-            '2MiA0LjI4N2wtMS4zMjMtLjU2NSA0LjQzOS00LjUwMyAxLjMyLjQ1NS00LjQzNiA0LjYxM3ptLTQuMDgzLjM4N2wtMS40ODEtLjUwNyA4LTcuODkgMS40MzcuMzk3LTcuOTU2IDh6Ii8+PC9zdmc+';
+          el.src = this.paperImgSrc;
 
           new mapboxgl.Marker(el)
             .setLngLat(marker.geometry.coordinates)
@@ -94,18 +85,15 @@ export class MapBoxComponent implements OnInit {
         events.forEach(vkEvent => {
           if (vkEvent.place) {
             const el = document.createElement('img');
-            el.src = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGV' +
-              'pZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMjMgMGwtNC41IDE2LjUtNi4wOTctNS40MyA1Ljg1Mi02LjE3NS03Ljg0NCA1LjQyMS01LjQxMS0xLjMxNiA' +
-              'xOC05em0tMTEgMTIuNTAxdjUuNDk5bDIuMTkzLTMuMzIzLTIuMTkzLTIuMTc2em0tOC42OTggNi44MjVsLTEuNDM5LS41MDcgNS43MDEtNS4yMTUgMS40MzYuMzk2LTUuNjk4IDUuMzI2em0zLjI' +
-              '2MiA0LjI4N2wtMS4zMjMtLjU2NSA0LjQzOS00LjUwMyAxLjMyLjQ1NS00LjQzNiA0LjYxM3ptLTQuMDgzLjM4N2wtMS40ODEtLjUwNyA4LTcuODkgMS40MzcuMzk3LTcuOTU2IDh6Ii8+PC9zdmc+';
+            el.src = this.paperImgSrc;
 
-            new mapboxgl.Marker(el)
-              .setLngLat([vkEvent.place.longitude, vkEvent.place.latitude])
-              .setPopup(new mapboxgl.Popup({offset: 25}) // add popups
-                .setHTML(
-                  '<p>' + vkEvent.description + '</p>'
-                ))
-              .addTo(this.map);
+              new mapboxgl.Marker(el)
+                .setLngLat([vkEvent.place.longitude, vkEvent.place.latitude])
+                .setPopup(new mapboxgl.Popup({offset: 25}) // add popups
+                  .setHTML(
+                    '<p>' + vkEvent.description + '</p>'
+                  ))
+                .addTo(this.map);
           }
         });
       });

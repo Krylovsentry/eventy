@@ -1,5 +1,5 @@
 <div class="sidebar-wrapper">
-  <button class="button create-event-button">
+  <button class="button create-event-button" >
     <span class="create-event-button__label">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
         <path
@@ -9,6 +9,6 @@
     </span>
   </button>
   <div *ngFor="let marker of markers | async">
-    <button>{{ marker.properties.message }}</button>
+    <app-event-box [marker]="marker"></app-event-box>
   </div>
 </div>
