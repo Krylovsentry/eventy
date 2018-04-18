@@ -1,5 +1,4 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {MatDialog} from '@angular/material';
 
 @Component({
   selector: 'app-sidebar',
@@ -12,7 +11,7 @@ export class SidebarComponent implements OnInit {
   @Input() markers: any;
   @Input() vkEvents: any;
 
-  constructor(public dialog: MatDialog) {
+  constructor() {
   }
 
   ngOnInit() {

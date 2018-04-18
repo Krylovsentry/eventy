@@ -36,7 +36,7 @@ export class MapBoxComponent implements OnInit {
   }
 
   private initializeMap() {
-    /// locate the user
+    /// locate the user's position
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(position => {
         this.lng = position.coords.longitude;
@@ -102,15 +102,4 @@ export class MapBoxComponent implements OnInit {
 
   }
 
-
-  /// Helpers
-  removeMarker(marker) {
-    this.mapService.removeMarker(marker);
-  }
-
-  flyTo(data: GeoJson) {
-    this.map.flyTo({
-      center: data.geometry.coordinates
-    });
-  }
 }

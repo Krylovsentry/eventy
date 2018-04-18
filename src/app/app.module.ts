@@ -15,8 +15,9 @@ import {AngularFireDatabase} from 'angularfire2/database';
 import {SidebarComponent} from './components/sidebar/sidebar.component';
 import {VkService} from './services/vk.service';
 import { EventBoxComponent } from './components/event-box/event-box.component';
-import {MatButtonModule, MatDialogModule, MatInputModule} from '@angular/material';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { CreateEventModalComponent } from './components/create-event-modal/create-event-modal.component';
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import {NoopAnimationsModule} from '@angular/platform-browser/animations';
     MapBoxComponent,
     SidebarComponent,
     EventBoxComponent,
+    CreateEventModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -33,10 +35,8 @@ import {NoopAnimationsModule} from '@angular/platform-browser/animations';
     AngularFirestoreModule,
     AngularFireAuthModule,
     AngularFireStorageModule,
-    MatDialogModule,
-    MatButtonModule,
-    MatInputModule,
-    NoopAnimationsModule
+    NoopAnimationsModule,
+    NgbModule.forRoot()
   ],
   providers: [VkService, MapService, AngularFireDatabase],
   bootstrap: [AppComponent]
