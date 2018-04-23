@@ -11,6 +11,12 @@ export const environment = {
   },
 
   mapbox: {
-    accessToken : 'pk.eyJ1Ijoia3J5bG92c2VudHJ5IiwiYSI6ImNqZnRsaW41ODBkMmozM252Z2pjM2J4aHIifQ.NwCnQfb84eUBPZ1LLBKCOg'
+    accessToken: 'pk.eyJ1Ijoia3J5bG92c2VudHJ5IiwiYSI6ImNqZnRsaW41ODBkMmozM252Z2pjM2J4aHIifQ.NwCnQfb84eUBPZ1LLBKCOg'
+  },
+
+  googleMapsKey: 'AIzaSyD6sDS2mJgI3fFOMmXR9ALfuiltoWqfA2I',
+
+  vk: {
+    vkApiVersion: 5.74
   }
 };

@@ -18,6 +18,7 @@ import { EventBoxComponent } from './components/event-box/event-box.component';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { CreateEventModalComponent } from './components/create-event-modal/create-event-modal.component';
+import { GoogleMapComponentComponent } from './components/google-map-component/google-map-component.component';
 
 
 @NgModule({
@@ -27,6 +28,7 @@ import { CreateEventModalComponent } from './components/create-event-modal/creat
     SidebarComponent,
     EventBoxComponent,
     CreateEventModalComponent,
+    GoogleMapComponentComponent,
   ],
   imports: [
     BrowserModule,

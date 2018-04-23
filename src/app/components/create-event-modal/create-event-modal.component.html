@@ -6,10 +6,12 @@
     </button>
   </div>
   <div class="modal-body">
-    <p>One fine body&hellip;</p>
+    <label class="modal-body modal-body__label">
+      <textarea class="modal-body modal-body__label__textarea" maxlength="140" [(ngModel)]="message"></textarea>
+    </label>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="c('Close click')">Close</button>
+    <button type="button" class="btn btn-outline-dark" (click)="c('Close click')">Отправить</button>
   </div>
 </ng-template>
 

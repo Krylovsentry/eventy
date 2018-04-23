@@ -1,4 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {VkService} from '../../services/vk.service';
+import {MapService} from '../../services/map.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -8,14 +10,14 @@ import {Component, Input, OnInit} from '@angular/core';
 export class SidebarComponent implements OnInit {
 
 
-  @Input() markers: any;
-  @Input() vkEvents: any;
+  markers: any;
+  vkEvents: any;
 
-  constructor() {
+  constructor(private mapService: MapService, private vkService: VkService) {
   }
 
   ngOnInit() {
+    this.markers = this.mapService.getMarkers();
+    this.vkEvents = this.vkService.getNearEvents();
   }
-
-
 }

@@ -1,0 +1,8 @@
+app-sidebar {
+  position: absolute;
+  height: 100vh;
+  overflow: auto;
+  z-index: 100;
+  background: white;
+}
+

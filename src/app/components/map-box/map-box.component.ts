@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
 import {MapService} from '../../services/map.service';
-import {GeoJson} from '../../map';
+import {FeatureCollection, GeoJson} from '../../map';
 import {VkService} from '../../services/vk.service';
 
 
@@ -62,14 +62,15 @@ export class MapBoxComponent implements OnInit {
     /// Add map controls
     this.map.addControl(new mapboxgl.NavigationControl());
 
-    /// Add realtime firebase data on map load
     this.map.on('load', (event) => {
 
-      /// subscribe to realtime database and set data source
       this.markers.subscribe(markers => {
         markers.forEach(marker => {
           const el = document.createElement('img');
           el.src = this.paperImgSrc;
+          el.addEventListener('click', ev => {
+            //  click logic
+          });
 
           new mapboxgl.Marker(el)
             .setLngLat(marker.geometry.coordinates)
@@ -86,15 +87,21 @@ export class MapBoxComponent implements OnInit {
           if (vkEvent.place) {
             const el = document.createElement('img');
             el.src = this.paperImgSrc;
+            el.addEventListener('click', ev => {
+              //  click logic
+            });
 
-              new mapboxgl.Marker(el)
-                .setLngLat([vkEvent.place.longitude, vkEvent.place.latitude])
-                .setPopup(new mapboxgl.Popup({offset: 25}) // add popups
-                  .setHTML(
-                    '<p>' + vkEvent.description + '</p>'
-                  ))
-                .addTo(this.map);
+            new mapboxgl.Marker(el)
+              .setLngLat([vkEvent.place.longitude, vkEvent.place.latitude])
+              .setPopup(new mapboxgl.Popup({offset: 25})// add popups
+                .setHTML(
+                  `<div>${vkEvent.name}<div>` +
+                  `<div>${vkEvent.description}</div>` +
+                  `<div>${vkEvent.activity}</div>`
+                ))
+              .addTo(this.map);
           }
+
         });
       });
 
